@@ -1,0 +1,31 @@
+{
+  "name": "runtime-node-net",
+  "version": "0.0.0",
+  "description": "Wrapper around runtimejs-tcp with node.js",
+  "main": "index.js",
+  "scripts": {
+    "node-test": "tape test/test.js",
+    "test": "runtimeify test/test.js && runtime-qemu initrd"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kesla/runtime-node-net.git"
+  },
+  "author": "David Björklund <david.bjorklund@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kesla/runtime-node-net/issues"
+  },
+  "homepage": "https://github.com/kesla/runtime-node-net#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "runtime-tools": "^0.3.0",
+    "runtimeify": "^0.2.1",
+    "split": "^1.0.0",
+    "tap-finished": "0.0.1",
+    "tape": "^4.0.0"
+  },
+  "keywords": [
+    "runtimejs"
+  ]
+}
