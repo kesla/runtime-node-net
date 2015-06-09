@@ -81,3 +81,31 @@ test('createServer() listen, close, listen and close', function (t) {
   });
   async++;
 });
+
+test('createConnection && connect', function (t) {
+  t.equal(net.createConnection, net.connect, 'createConnection & connect are the same');
+  t.end();
+});
+
+test('createServer() & createConnection()', function (t) {
+  var server = net.createServer();
+
+  server.once('connection', function (serverSocket) {
+    serverSocket.once('data', function (chunk) {
+      t.equal(chunk.toString(), 'beep');
+    });
+    serverSocket.write('boop');
+    serverSocket.end();
+  });
+
+  server.listen(0, function () {
+    var clientSocket = net.createConnection(server.address().port);
+    clientSocket.write('beep');
+    clientSocket.once('data', function (chunk) {
+      t.equal(chunk.toString(), 'boop');
+      server.close(function () {
+        t.end();
+      });
+    });
+  });
+});
