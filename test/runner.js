@@ -1,5 +1,7 @@
 'use strict';
 
+process.exitCode = 1;
+
 const cp = require('child_process');
 const tsml = require('tsml');
 const runtimeify = cp.spawn('runtimeify', `${__dirname}/test.js -o ${__dirname}/initrd`.split(' '));
