@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "node-test": "tape test/test.js",
-    "test": "runtimeify test/test.js && runtime-qemu initrd"
+    "test": "node test/runner.js"
   },
   "repository": {
     "type": "git",
