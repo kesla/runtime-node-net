@@ -1,7 +1,7 @@
 'use strict';
 
-var connect = require('./lib/connect');
-var Server = require('./lib/server');
+const connect = require('./lib/connect');
+const Server = require('./lib/server');
 
 module.exports.createServer = function () {
   return new Server();

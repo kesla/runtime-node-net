@@ -1,14 +1,14 @@
 'use strict';
 
-var test = require('tape');
+const test = require('tape');
 // right now we get browser === true when in runtimejs
-var net = process.browser ? require('../') : require('net');
+const net = process.browser ? require('../') : require('net');
 
 test('createServer listen to port', function (t) {
-  var server = net.createServer();
+  const server = net.createServer();
 
   server.listen(9999, function () {
-    var address = server.address();
+    const address = server.address();
     t.equal(address.port, 9999, 'correct port');
     t.equal(address.address, '::', 'correct address');
     t.equal(address.family, 'IPv6', 'correct family');
@@ -18,10 +18,10 @@ test('createServer listen to port', function (t) {
 });
 
 test('createServer() listen to port & address', function (t) {
-  var server = net.createServer();
+  const server = net.createServer();
 
   server.listen(9999, '127.0.0.1', function () {
-    var address = server.address();
+    const address = server.address();
     t.equal(address.port, 9999, 'correct port');
     t.equal(address.address, '127.0.0.1', 'correct address');
     t.equal(address.family, 'IPv4', 'correct family');
@@ -31,10 +31,10 @@ test('createServer() listen to port & address', function (t) {
 });
 
 test('createServer() listen to port 0', function (t) {
-  var server = net.createServer();
+  const server = net.createServer();
 
   server.listen(0, '127.0.0.1', function () {
-    var address = server.address();
+    const address = server.address();
     t.ok(address.port > 0, 'correct port');
     t.equal(address.address, '127.0.0.1', 'correct address');
     t.equal(address.family, 'IPv4', 'correct family');
@@ -44,8 +44,8 @@ test('createServer() listen to port 0', function (t) {
 });
 
 test('createServer() subscribe to events', function (t) {
-  var server = net.createServer();
-  var async = 0;
+  const server = net.createServer();
+  let async = 0;
   server.listen(0);
   server.once('listening', function () {
     server.close();
@@ -59,9 +59,8 @@ test('createServer() subscribe to events', function (t) {
 });
 
 test('createServer() listen, close, listen and close', function (t) {
-  var server = net.createServer();
-  var async = 0;
-
+  const server = net.createServer();
+  let async = 0;
   server.listen(0, function () {
     t.ok(server.address().port > 0, 'correct port');
     server.close(function () {
@@ -88,7 +87,7 @@ test('createConnection && connect', function (t) {
 });
 
 test('createServer() & createConnection()', function (t) {
-  var server = net.createServer();
+  const server = net.createServer();
 
   server.once('connection', function (serverSocket) {
     serverSocket.once('data', function (chunk) {
@@ -99,7 +98,7 @@ test('createServer() & createConnection()', function (t) {
   });
 
   server.listen(0, function () {
-    var clientSocket = net.createConnection(server.address().port);
+    const clientSocket = net.createConnection(server.address().port);
     clientSocket.write('beep');
     clientSocket.once('data', function (chunk) {
       t.equal(chunk.toString(), 'boop');
