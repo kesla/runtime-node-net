@@ -102,9 +102,23 @@ test('createServer() & createConnection()', function (t) {
     clientSocket.write('beep');
     clientSocket.once('data', function (chunk) {
       t.equal(chunk.toString(), 'boop');
-      server.close(function () {
-        t.end();
-      });
+      server.close(t.end.bind(t));
     });
+  });
+});
+
+test('createServer() with callback', function (t) {
+  const server = net.createServer(function (socket) {
+    socket.once('data', function (chunk) {
+      t.equal(chunk.toString(), 'beep');
+      socket.end();
+      server.close(t.end.bind(t));
+    });
+  });
+
+  server.listen(0, function () {
+    var socket = net.createConnection(server.address().port);
+    socket.write('beep');
+    socket.end();
   });
 });
