@@ -1,8 +1,7 @@
 'use strict';
 
 const test = require('tape');
-// right now we get browser === true when in runtimejs
-const net = process.browser ? require('../') : require('net');
+const net = require('net');
 
 test('createServer listen to port', function (t) {
   const server = net.createServer();

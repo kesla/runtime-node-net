@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kesla/runtime-node-net.git"
+    "url": "git@github.com:kesla/runtime-node-net.git"
   },
   "author": "David Björklund <david.bjorklund@gmail.com>",
   "license": "MIT",
@@ -17,10 +17,10 @@
     "url": "https://github.com/kesla/runtime-node-net/issues"
   },
   "homepage": "https://github.com/kesla/runtime-node-net#readme",
-  "dependencies": {},
   "devDependencies": {
-    "runtime-tools": "^0.3.0",
-    "runtimeify": "^0.2.1",
+    "runtime-tools": "^0.4.0",
+    "runtimeify": "^0.3.0",
+    "runtimejs": "^0.1.8",
     "split": "^1.0.0",
     "tap-finished": "0.0.1",
     "tape": "^4.0.0"
