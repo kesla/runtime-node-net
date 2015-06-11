@@ -116,8 +116,71 @@ test('createServer() with callback', function (t) {
   });
 
   server.listen(0, function () {
-    var socket = net.createConnection(server.address().port);
+    const socket = net.createConnection(server.address().port);
     socket.write('beep');
     socket.end();
+  });
+});
+
+test('createConnection() local with ip and callback', function (t) {
+  const server = net.createServer(function (socket) {
+    socket.end();
+    server.close(t.end.bind(t));
+  });
+
+  server.listen(0, function () {
+    const socket = net.createConnection(server.address().port, '127.0.0.1', function () {
+      socket.end();
+    });
+  });
+})
+
+test('createConnection() local with object', function (t) {
+  const server = net.createServer(function (socket) {
+    socket.end();
+    server.close(t.end.bind(t));
+  });
+
+  server.listen(0, function () {
+    const socket = net.createConnection({
+      port: server.address().port,
+      host: '127.0.0.1'
+    });
+
+    socket.once('connect', function () {
+      socket.end();
+    });
+  });
+})
+
+test('createConnection() local with object and callback', function (t) {
+  const server = net.createServer(function (socket) {
+    socket.end();
+    server.close(t.end.bind(t));
+  });
+
+  server.listen(0, function () {
+    const socket = net.createConnection({
+      port: server.address().port,
+      host: '127.0.0.1'
+    }, function () {
+      socket.end();
+    });
+  });
+});
+
+test('createConnection() localhost as host', function (t) {
+  const server = net.createServer(function (socket) {
+    socket.end();
+    server.close(t.end.bind(t));
+  });
+
+  server.listen(0, function () {
+    const socket = net.createConnection({
+      port: server.address().port,
+      host: 'localhost'
+    }, function () {
+      socket.end();
+    });
   });
 });
