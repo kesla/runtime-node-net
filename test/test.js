@@ -3,6 +3,7 @@
 const test = require('tape');
 const net = require('net');
 
+/*
 test('createServer listen to port', function (t) {
   const server = net.createServer();
 
@@ -184,3 +185,4 @@ test('createConnection() localhost as host', function (t) {
     });
   });
 });
+*/
