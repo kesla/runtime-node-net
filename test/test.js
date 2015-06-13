@@ -186,3 +186,12 @@ test('createConnection() localhost as host', function (t) {
   });
 });
 */
+test('createConnection() with external host', function (t) {
+  let async = false;
+  const socket = net.createConnection(80, 'example.com', function () {
+    t.ok(async, 'should be async');
+    t.end();
+    socket.end();
+  });
+  async = true;
+});

@@ -3,7 +3,14 @@
 const test = require('tape');
 const http = require('http');
 
-test('simple GET request', function (t) {
+test('GET client external request', function (t) {
+  http.get('http://example.com', function (res) {
+    t.equal(res.statusCode, 200, 'res.statusCode');
+    t.end();
+  });
+});
+
+test('simple GET server & client request', function (t) {
   const server = http.createServer(function (req, res) {
     t.equal(req.url, '/a/b/c', 'req.url');
     t.equal(req.method, 'GET', 'req.method');

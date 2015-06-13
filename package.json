@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/kesla/runtime-node-net#readme",
   "dependencies": {
-    "es6-class": "^0.9.5"
+    "es6-class": "^0.9.5",
+    "is-ip": "^1.0.0"
   },
   "devDependencies": {
     "http-node": "0.0.2",
