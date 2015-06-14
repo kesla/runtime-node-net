@@ -6,6 +6,7 @@ const cp = require('child_process');
 const finished = require('tap-finished');
 const runtimeify = require('runtimeify');
 const split = require('split');
+const path = require('path');
 
 runtimeify.builtins.http = require.resolve('http-node');
 runtimeify.builtins.net = require.resolve('../index');
@@ -19,6 +20,7 @@ const files = input.length ?
     __dirname + '/connection-test.js',
     __dirname + '/http-test.js'
   ];
+const qemuPath = path.resolve(__dirname, '../node_modules/.bin/runtime-qemu');
 
 runtimeify({
   file: files,
@@ -29,7 +31,7 @@ runtimeify({
     throw err;
   }
 
-  const qemu = cp.spawn('runtime-qemu',
+  const qemu = cp.spawn(qemuPath,
     [ `${__dirname}/initrd`, '--verbose', '--nographic' ]
   );
 
