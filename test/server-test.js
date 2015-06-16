@@ -1,8 +1,7 @@
 'use strict';
 
 const test = require('tape');
-// right now we get browser === true when in runtimejs
-const net = process.browser ? require('../') : require('net');
+const net = require('net');
 
 test('createServer listen to port', function (t) {
   const server = net.createServer();
@@ -81,32 +80,6 @@ test('createServer() listen, close, listen and close', function (t) {
   async++;
 });
 
-test('createConnection && connect', function (t) {
-  t.equal(net.createConnection, net.connect, 'createConnection & connect are the same');
-  t.end();
-});
-
-test('createServer() & createConnection()', function (t) {
-  const server = net.createServer();
-
-  server.once('connection', function (serverSocket) {
-    serverSocket.once('data', function (chunk) {
-      t.equal(chunk.toString(), 'beep');
-    });
-    serverSocket.write('boop');
-    serverSocket.end();
-  });
-
-  server.listen(0, function () {
-    const clientSocket = net.createConnection(server.address().port);
-    clientSocket.write('beep');
-    clientSocket.once('data', function (chunk) {
-      t.equal(chunk.toString(), 'boop');
-      server.close(t.end.bind(t));
-    });
-  });
-});
-
 test('createServer() with callback', function (t) {
   const server = net.createServer(function (socket) {
     socket.once('data', function (chunk) {
@@ -117,7 +90,7 @@ test('createServer() with callback', function (t) {
   });
 
   server.listen(0, function () {
-    var socket = net.createConnection(server.address().port);
+    const socket = net.createConnection(server.address().port);
     socket.write('beep');
     socket.end();
   });

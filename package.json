@@ -17,15 +17,25 @@
     "url": "https://github.com/kesla/runtime-node-net/issues"
   },
   "homepage": "https://github.com/kesla/runtime-node-net#readme",
-  "dependencies": {},
+  "dependencies": {
+    "es6-class": "^0.9.5",
+    "is-ip": "^1.0.0"
+  },
   "devDependencies": {
-    "runtime-tools": "^0.3.0",
-    "runtimeify": "^0.2.1",
+    "http-node": "0.0.2",
+    "runtime-tools": "^0.5.0",
+    "runtimeify": "^0.3.1",
+    "runtimejs": "^0.1.11",
     "split": "^1.0.0",
     "tap-finished": "0.0.1",
     "tape": "^4.0.0"
   },
   "keywords": [
     "runtimejs"
-  ]
+  ],
+  "browserify": {
+    "transform": [
+      "es6-class"
+    ]
+  }
 }
