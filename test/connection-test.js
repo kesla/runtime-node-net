@@ -24,6 +24,8 @@ test('createServer() & createConnection()', function (t) {
     clientSocket.write('beep');
     clientSocket.once('data', function (chunk) {
       t.equal(chunk.toString(), 'boop');
+    });
+    clientSocket.once('end', function () {
       server.close(t.end.bind(t));
     });
   });
