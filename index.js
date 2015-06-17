@@ -5,6 +5,18 @@ const Server = require('./lib/server');
 const Socket = require('./lib/socket');
 const isIp = require('is-ip');
 
+const wrapper = new Server(function(servsocket) {
+  servsocket.once('data', function(data) {
+    servsocket.end();
+    wrapper.close();
+  });
+});
+wrapper.listen(0, function() {
+  const initsocket = connect(wrapper.address().port);
+  initsocket.write('open');
+  initsocket.close();
+});
+
 module.exports.Server = Server;
 module.exports.createServer = function (cb) {
   return new Server(cb);
