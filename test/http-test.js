@@ -10,33 +10,6 @@ test('GET client external request', function (t) {
   });
 });
 
-test('GET client external request on(\'data\')', function (t) {
-  http.get('http://example.com', function (res) {
-    try {
-      res.on('data', function(data) {
-        t.pass();
-      });
-    } catch(e) {
-      t.fail();
-    }
-  });
-});
-
-test('GET client external request on(\'end\')', function (t) {
-  http.get('http://example.com', function (res) {
-    res.on('data', function(data) {
-      // nothing
-    });
-    try {
-      res.on('end', function() {
-        t.pass();
-      });
-    } catch(e) {
-      t.fail();
-    }
-  });
-});
-
 test('simple GET server & client request', function (t) {
   const server = http.createServer(function (req, res) {
     t.equal(req.url, '/a/b/c', 'req.url');
