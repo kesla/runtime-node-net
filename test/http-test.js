@@ -10,7 +10,7 @@ test('GET client external request', function (t) {
   });
 });
 
-test('GET client external request on(\'data\')' function (t) {
+test('GET client external request on(\'data\')', function (t) {
   http.get('http://example.com', function (res) {
     try {
       res.on('data', function(data) {
@@ -22,7 +22,7 @@ test('GET client external request on(\'data\')' function (t) {
   });
 });
 
-test('GET client external request on(\'end\')' function (t) {
+test('GET client external request on(\'end\')', function (t) {
   http.get('http://example.com', function (res) {
     res.on('data', function(data) {
       // nothing
