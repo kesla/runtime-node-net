@@ -1,5 +1,3 @@
-'use strict';
-
 process.exitCode = 1;
 
 const cp = require('child_process');
@@ -32,7 +30,7 @@ runtimeify({
   }
 
   const qemu = cp.spawn(qemuPath,
-    [ `${__dirname}/initrd`, '--verbose', '--nographic' ]
+    [ __dirname + '/initrd', '--verbose', '--nographic' ]
   );
 
   qemu.stdout.pipe(finished(function (results) {
