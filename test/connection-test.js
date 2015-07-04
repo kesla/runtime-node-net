@@ -155,4 +155,81 @@ test('createConnection() google.com dns lookup', function (t) {
     t.end();
     socket.destroy();
   });
-})
+});
+
+// adapted from https://github.com/nodejs/io.js/blob/master/test/parallel/test-net-pause-resume-connecting.js
+test('createConnection() pause, resume, connecting', function (t) {
+  let connections = 0;
+  let dataEvents = 0;
+
+  // Server
+  const server = net.createServer(function(conn) {
+    connections++;
+    conn.end('This was the year he fell to pieces.');
+
+    if (connections === 5) {
+      server.close();
+      setTimeout(function () {
+        t.equal(dataEvents, 3);
+        t.end();
+      }, 100);
+    }
+  });
+
+  server.listen(0, function () {
+    const port = server.address().port;
+    let conn;
+
+    // Client 1
+    conn = net.createConnection(port, 'localhost');
+    conn.resume();
+    conn.on('data', onDataOk);
+
+
+    // Client 2
+    conn = net.createConnection(port, 'localhost');
+    conn.pause();
+    conn.resume();
+    conn.on('data', onDataOk);
+
+
+    // Client 3
+    conn = net.createConnection(port, 'localhost');
+    conn.pause();
+    conn.on('data', onDataError);
+    scheduleTearDown(conn);
+
+
+    // Client 4
+    conn = net.createConnection(port, 'localhost');
+    conn.resume();
+    conn.pause();
+    conn.resume();
+    conn.on('data', onDataOk);
+
+
+    // Client 5
+    conn = net.createConnection(port, 'localhost');
+    conn.resume();
+    conn.resume();
+    conn.pause();
+    conn.on('data', onDataError);
+    scheduleTearDown(conn);
+  });
+
+  // Client helper functions
+  function onDataError() {
+    t.fail('should not get data');
+  }
+
+  function onDataOk() {
+    dataEvents++;
+  }
+
+  function scheduleTearDown(conn) {
+    setTimeout(function() {
+      conn.removeAllListeners('data');
+      conn.resume();
+    }, 100);
+  }
+});
