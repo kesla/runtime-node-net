@@ -109,3 +109,63 @@ test('createServer() bind twice', function (t) {
     t.end();
   });
 });
+
+// adapted from https://github.com/nodejs/io.js/blob/master/test/parallel/test-net-server-try-ports.js
+// This tests binds to one port, then attempts to start a server on that
+// port. It should be EADDRINUSE but be able to then bind to another port.
+test('createServer() try ports', function (t) {
+  let server1listening = false;
+  let server2listening = false;
+  let server2eaddrinuse = false;
+
+  const server1 = net.createServer(function(socket) {
+    socket.destroy();
+  });
+
+  const server2 = net.createServer(function(socket) {
+    socket.destroy();
+  });
+
+  let server2errors = 0;
+  server2.on('error', function(e) {
+    server2errors++;
+
+    if (e.code == 'EADDRINUSE') {
+      server2eaddrinuse = true;
+    }
+
+    server2.listen(0, function() {
+      t.ok(server1listening, 'server1 listening');
+      t.ok(server2eaddrinuse, 'server2 EADDRINUSE');
+      t.equal(server2errors, 1, 'server2 1 error');
+
+      server1.close();
+      server2.close();
+      t.end();
+    });
+  });
+
+
+  server1.listen(0, function() {
+    server1listening = true;
+    // This should make server2 emit EADDRINUSE
+    server2.listen(server1.address().port);
+  });
+});
+
+// adapted from https://github.com/nodejs/io.js/blob/master/test/parallel/test-net-listen-close-server.js
+test('createServer() listen & close in same tick', function (t) {
+  var server = net.createServer(t.fail.bind(t));
+  server.listen(0, t.fail.bind(t));
+  server.on('error', t.fail.bind(t));
+  server.close(t.end.bind(t));
+});
+
+// https://github.com/nodejs/io.js/blob/master/test/parallel/test-net-listen-close-server-callback-is-not-function.js
+test('createServer() listen & close in same tick with bad close argument', function (t) {
+  var server = net.createServer(t.fail.bind(t));
+  server.listen(0, t.fail.bind(t));
+  server.on('error', t.fail.bind(t));
+  server.on('close', t.end.bind(t));
+  server.close('bad argument');
+})
