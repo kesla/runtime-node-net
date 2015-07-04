@@ -14,6 +14,6 @@ module.exports.Socket = Socket;
 module.exports.createConnection = connect;
 
 module.exports.connect = connect;
-module.exports.isIp = isIp;
+module.exports.isIP = isIp;
 module.exports.isIPv4 = isIp.v4;
-module.exports.isIpv6 = isIp.v6;
+module.exports.isIPv6 = isIp.v6;
