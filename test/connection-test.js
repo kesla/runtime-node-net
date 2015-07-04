@@ -24,7 +24,31 @@ test('createServer() & createConnection()', function (t) {
     clientSocket.write('beep');
     clientSocket.once('data', function (chunk) {
       t.equal(chunk.toString(), 'boop');
+    });
+    clientSocket.once('end', function () {
       server.close(t.end.bind(t));
+    });
+  });
+});
+
+test('createConnection() multiple writes', function (t) {
+  const net = require('net');
+  const server = net.createServer(function(socket) {
+    let chunks = '';
+    socket.on('data', function(chunk) {
+      chunks += chunk.toString();
+    });
+    socket.on('end', function() {
+      t.equal(chunks, 'stuff\r\nhey\r\n');
+      t.end();
+      server.close();
+    });
+  });
+  server.listen(0, function() {
+    const client = net.createConnection({ port: server.address().port }, function() {
+      client.write('stuff\r\n');
+      client.write('hey\r\n');
+      client.end();
     });
   });
 });
