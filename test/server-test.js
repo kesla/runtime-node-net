@@ -95,3 +95,17 @@ test('createServer() with callback', function (t) {
     socket.end();
   });
 });
+
+// adapted from https://github.com/nodejs/io.js/blob/master/test/parallel/test-net-bind-twice.js
+test('createServer() bind twice', function (t) {
+  const server1 = net.createServer(t.fail.bind(t));
+  server1.listen(0, function () {
+    server2.listen(server1.address().port, t.fail.bind(t));
+  })
+  const server2 = net.createServer(t.fail.bind(t));
+  server2.on('error', function (e) {
+    t.equal(e.code, 'EADDRINUSE');
+    server1.close();
+    t.end();
+  });
+});
