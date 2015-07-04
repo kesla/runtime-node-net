@@ -125,3 +125,34 @@ test('createConnection() with external host', function (t) {
   });
   async = true;
 });
+
+// adapted from https://github.com/nodejs/io.js/blob/master/test/parallel/test-net-dns-lookup.js
+test('createConnection() localhost dns lookup', function (t) {
+  t.plan(3);
+  let ok = false;
+  const server = net.createServer(function(client) {
+    client.end();
+    server.close();
+    t.end();
+  });
+
+  server.listen(0, '127.0.0.1', function() {
+    const port = server.address().port;
+    net.createConnection(port, 'localhost').on('lookup', function(err, ip, type) {
+      t.equal(err, null, 'no error');
+      t.equal(ip, '127.0.0.1', 'ip');
+      t.equal(type, 4, 'type');
+    });
+  });
+});
+
+test('createConnection() google.com dns lookup', function (t) {
+  const socket = net.createConnection(80, 'google.com')
+  socket.on('lookup', function (err, ip, type) {
+    t.equal(err, null, 'no error');
+    t.ok(net.isIP(ip), 'ip');
+    t.equal(type, 4, 'type');
+    t.end();
+    socket.destroy();
+  });
+})
