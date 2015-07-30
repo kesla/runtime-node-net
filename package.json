@@ -1,6 +1,6 @@
 {
   "name": "runtime-node-net",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Wrapper around runtimejs-tcp with node.js",
   "main": "index.js",
   "scripts": {
