@@ -23,9 +23,9 @@
   },
   "devDependencies": {
     "http-node": "0.0.2",
-    "runtime-tools": "^1.0.0",
+    "runtime-tools": "^1.4.0",
     "runtimeify": "^1.0.0",
-    "runtimejs": "^0.1.18",
+    "runtimejs": "^0.1.25",
     "split": "^1.0.0",
     "tap-finished": "0.0.1",
     "tape": "^4.0.0"
